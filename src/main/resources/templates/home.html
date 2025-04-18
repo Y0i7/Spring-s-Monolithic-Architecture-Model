@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Market Home</title>
 </head>
 <body>
-
+<h1>Bienvenido al Sistema Market</h1>
+<div>
+    <a th:href="@{/users}">Gestión de Usuarios</a><br>
+    <a th:href="@{/products}">Gestión de Productos</a><br>
+    <a th:href="@{/delivers}">Gestión de Entregas</a>
+</div>
 </body>
 </html>
