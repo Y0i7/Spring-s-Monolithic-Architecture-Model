@@ -45,10 +45,10 @@ public class ProductController {
 
     @PostMapping
     public String createProduct(@Valid @ModelAttribute("product") Product product, BindingResult result) {
-        productService.saveProduct(product);
         if (result.hasErrors()) {
             return "products/create";
         }
+        productService.saveProduct(product);
         return "redirect:/products";
     }
 

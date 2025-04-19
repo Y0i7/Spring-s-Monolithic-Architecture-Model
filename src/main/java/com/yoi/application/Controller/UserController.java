@@ -3,6 +3,7 @@ package com.yoi.application.Controller;
 import com.yoi.application.Model.User;
 import com.yoi.application.Service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +20,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-
-    @Autowired //Dependency Injection 
+  
+    @Autowired
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -29,8 +30,8 @@ public class UserController {
 
     @GetMapping
     public String getAllUsers(Model model) {
-        List<User> user = userService.getAllUsers();
-        model.addAttribute("users", user);
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
         return "users/list";
     }
 
