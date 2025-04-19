@@ -67,18 +67,25 @@ public class ProductController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute("product") Product product, BindingResult result) {
+    public String updateProduct(@PathVariable Long id,
+                                @Valid @ModelAttribute("product") Product product, BindingResult result,
+                                Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("product", product);
             return "products/edit";
         }
-        productService.updateProduct(id, product);
+        try{
+            productService.updateProduct(id, product);
+        } catch (Exception e) {
+            model.addAttribute("error", "Error updating product: " + e.getMessage());
+            return "products/edit";
+        }
         return "redirect:/products";
     }
 
     /*
      * Delete Paths:
      */
-
     @PostMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);

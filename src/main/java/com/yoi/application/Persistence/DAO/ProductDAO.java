@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
  * @date 2025/04/17
  * @description ProductDAO class representing the product entity in the database.
  */
-
 @Entity
 @Table(name = "PRODUCTS")
 public class ProductDAO {

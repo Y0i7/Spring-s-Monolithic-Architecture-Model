@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @author Yoi
@@ -24,9 +26,20 @@ public class DeliverDAO {
     @JoinColumn(name = "USER_ID")
     private UserDAO user;
 
-    @ManyToOne
-    @JoinColumn(name = "PRODUCT_ID")
-    private ProductDAO product;
+    @ManyToMany
+    @JoinTable(name = "DELIVER_PRODUCT",
+            joinColumns = @JoinColumn(name = "DELIVER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
+    private  List<ProductDAO> product = new ArrayList<>();
+
+    @Column(name = "TOTAL", nullable = false)
+    private Double total = 0.0;
+
+    @Column(name = "TAXES", nullable = false)
+    private Double taxes = 0.0;
+
+    @Column(name = "DISCOUNT", nullable = false)
+    private Double discount = 0.0;
 
     @NotBlank
     @Column(name = "DATE")
@@ -34,10 +47,14 @@ public class DeliverDAO {
 
     public DeliverDAO(){}
 
-    public DeliverDAO(Long id, UserDAO user, ProductDAO product, LocalDate date){
+    public DeliverDAO(Long id, UserDAO user, List<ProductDAO> product,
+                      Double total, Double taxes, Double discount, LocalDate date){
         this.id = id;
         this.user = user;
         this.product = product;
+        this.total = total;
+        this.taxes = taxes;
+        this.discount = discount;
         this.date = date;
     }
 
@@ -49,9 +66,21 @@ public class DeliverDAO {
 
     public void setUser(UserDAO user){ this.user = user; }
 
-    public ProductDAO getProduct(){ return product; }
+    public List<ProductDAO> getProduct(){ return product; }
 
-    public void setProduct(ProductDAO product) { this.product = product; }
+    public void setProduct(List<ProductDAO> product) { this.product = product; }
+
+    public Double getTotal(){ return total; }
+
+    public void setTotal(Double total){ this.total = total; }
+
+    public Double getTaxes(){ return taxes; }
+
+    public void setTaxes(Double taxes){ this.taxes = taxes; }
+
+    public Double getDiscount(){ return discount; }
+
+    public void setDiscount(Double discount){ this.discount = discount; }
 
     public LocalDate getDate(){ return date; }
 
