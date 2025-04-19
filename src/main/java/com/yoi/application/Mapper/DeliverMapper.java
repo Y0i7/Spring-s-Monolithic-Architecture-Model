@@ -17,7 +17,10 @@ public class DeliverMapper {
         return new Deliver(
                 entity.getId(),
                 UserMapper.toDto(entity.getUser()),
-                ProductMapper.toDto(entity.getProduct()),
+                ProductMapper.toDtoList(entity.getProduct()),
+                entity.getTotal(),
+                entity.getTaxes(),
+                entity.getDiscount(),
                 entity.getDate()
         );
     }
@@ -32,7 +35,10 @@ public class DeliverMapper {
         return new DeliverDAO(
                 dto.getId(),
                 UserMapper.toEntity(dto.getUser()),
-                ProductMapper.toEntity(dto.getProduct()),
+                ProductMapper.toEntityList(dto.getProduct()),
+                dto.getTotal(),
+                dto.getTaxes(),
+                dto.getDiscount(),
                 dto.getDate()
         );
     }
