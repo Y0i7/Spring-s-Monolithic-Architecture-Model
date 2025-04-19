@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    @Autowired //Dependency Injection 
     private final UserService userService;
 
     public UserController(UserService userService) {
