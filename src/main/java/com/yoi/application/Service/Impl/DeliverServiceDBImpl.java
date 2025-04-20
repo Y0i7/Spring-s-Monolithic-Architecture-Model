@@ -102,13 +102,12 @@ public class DeliverServiceDBImpl implements DeliverService {
      */
     @Override
     public Deliver deleteDeliver(Long id) {
-        Optional<DeliverDAO> optionalEntity = deliverRepository.findById(id);
-        if (optionalEntity.isPresent()) {
-            Deliver dto = DeliverMapper.toDto(optionalEntity.get());
-            deliverRepository.deleteById(id);
-            return dto;
-        }
-        return null;
+        return deliverRepository.findById(id)
+                                .map((entity) -> {
+                                    deliveryRepository.deleteById(id);
+                                    return DeliveryMapper.toDto(entity);
+                                })
+                                .orElse(null);
     }
 
     /*
