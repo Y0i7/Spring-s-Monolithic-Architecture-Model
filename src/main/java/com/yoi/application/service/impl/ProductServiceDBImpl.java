@@ -1,10 +1,10 @@
-package com.yoi.application.Service.Impl;
+package com.yoi.application.service.impl;
 
-import com.yoi.application.Mapper.ProductMapper;
-import com.yoi.application.Model.Product;
-import com.yoi.application.Persistence.DAO.ProductDAO;
-import com.yoi.application.Persistence.Repository.ProductRepository;
-import com.yoi.application.Service.ProductService;
+import com.yoi.application.mapper.ProductMapper;
+import com.yoi.application.model.ProductDto;
+import com.yoi.application.persistence.dao.ProductDAO;
+import com.yoi.application.persistence.repository.ProductRepository;
+import com.yoi.application.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +20,10 @@ import java.util.Optional;
 @Service
 public class ProductServiceDBImpl implements ProductService {
 
-    // This class implements the ProductService interface for database operations.
+    @Autowired // Constructor-based dependency injection
     private final ProductRepository productRepository;
 
-    @Autowired // Constructor-based dependency injection
+
     public ProductServiceDBImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -33,7 +33,7 @@ public class ProductServiceDBImpl implements ProductService {
      * @return List<Product> - A list of Product objects.
      */
     @Override
-    public List<Product> getAllProducts() {
+    public List<ProductDto> getAllProducts() {
         List<ProductDAO> entities = productRepository.findAll();
         return ProductMapper.toDtoList(entities);
     }
@@ -44,7 +44,7 @@ public class ProductServiceDBImpl implements ProductService {
      * @return Product - The Product object with the specified ID, or null if not found.
      */
     @Override
-    public Product getProductById(Long id) {
+    public ProductDto getProductById(Long id) {
         Optional<ProductDAO> optionalEntity = productRepository.findById(id);
         return optionalEntity
                 .map(ProductMapper::toDto)
@@ -57,8 +57,8 @@ public class ProductServiceDBImpl implements ProductService {
      * @return Product - The saved Product object.
      */
     @Override
-    public Product saveProduct(Product product) {
-        ProductDAO entity = ProductMapper.toEntity(product);
+    public ProductDto saveProduct(ProductDto productDto) {
+        ProductDAO entity = ProductMapper.toEntity(productDto);
         return ProductMapper.toDto(productRepository.save(entity));
     }
 
@@ -69,12 +69,12 @@ public class ProductServiceDBImpl implements ProductService {
      * @return Product - The updated Product object, or null if not found.
      */
     @Override
-    public Product updateProduct(Long id, Product product) {
+    public ProductDto updateProduct(Long id, ProductDto productDto) {
         Optional<ProductDAO> optionalEntity = productRepository.findById(id);
         if (optionalEntity.isPresent()) {
             ProductDAO entity = optionalEntity.get();
-            entity.setName(product.getName());
-            entity.setPrice(product.getPrice());
+            entity.setName(productDto.getName());
+            entity.setPrice(productDto.getPrice());
             return ProductMapper.toDto(productRepository.save(entity));
         }
         return null;
@@ -86,7 +86,7 @@ public class ProductServiceDBImpl implements ProductService {
      * @return Product - The deleted Product object, or null if not found.
      */
     @Override
-    public Product deleteProduct(Long id) {
+    public ProductDto deleteProduct(Long id) {
         Optional<ProductDAO> optionalEntity = productRepository.findById(id);
         if (optionalEntity.isPresent()) {
             productRepository.deleteById(id);

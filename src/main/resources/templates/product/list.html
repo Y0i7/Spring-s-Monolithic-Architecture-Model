@@ -8,14 +8,14 @@
 <body class="container mt-4">
 <h1 class="mb-4">Our Products</h1>
 
-<a th:href="@{/products/new}" class="btn btn-primary mb-3">Create Product</a>
+<a th:href="@{/productDtos/new}" class="btn btn-primary mb-3">Create Product</a>
 <a th:href="@{/}" class="btn btn-secondary mb-3 ms-2">Back</a>
 
-<div th:if="${products.empty}" class="alert alert-info">
-    There's not any product yet.
+<div th:if="${productDtos.empty}" class="alert alert-info">
+    There's not any productDto yet.
 </div>
 
-<table class="table table-striped" th:unless="${products.empty}">
+<table class="table table-striped" th:unless="${productDtos.empty}">
     <thead class="table-dark">
     <tr>
         <th>ID</th>
@@ -25,15 +25,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.id}"></td>
-        <td th:text="${product.name}"></td>
-        <td th:text="${'$' + #numbers.formatDecimal(product.price, 1, 2)}"></td>
+    <tr th:each="productDto : ${productDtos}">
+        <td th:text="${productDto.id}"></td>
+        <td th:text="${productDto.name}"></td>
+        <td th:text="${'$' + #numbers.formatDecimal(productDto.price, 1, 2)}"></td>
         <td>
-            <a th:href="@{/products/edit/{id}(id=${product.id})}"
+            <a th:href="@{/productDtos/edit/{id}(id=${productDto.id})}"
                class="btn btn-warning btn-sm">Edit</a>
 
-            <form th:action="@{/products/delete/{id}(id=${product.id})}"
+            <form th:action="@{/productDtos/delete/{id}(id=${productDto.id})}"
                   method="post"
                   style="display: inline-block;">
                 <button type="submit"

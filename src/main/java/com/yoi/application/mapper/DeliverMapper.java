@@ -1,7 +1,7 @@
-package com.yoi.application.Mapper;
+package com.yoi.application.mapper;
 
-import com.yoi.application.Model.Deliver;
-import com.yoi.application.Persistence.DAO.DeliverDAO;
+import com.yoi.application.model.DeliverDto;
+import com.yoi.application.persistence.dao.DeliverDAO;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class DeliverMapper {
 
-    public static Deliver toDto(DeliverDAO entity){ if (entity == null){ return null; }
-        return new Deliver(
+    public static DeliverDto toDto(DeliverDAO entity){ if (entity == null){ return null; }
+        return new DeliverDto(
                 entity.getId(),
                 UserMapper.toDto(entity.getUser()),
                 ProductMapper.toDtoList(entity.getProduct()),
@@ -25,13 +25,13 @@ public class DeliverMapper {
         );
     }
 
-    public static List<Deliver> toDtoList(List<DeliverDAO> entities){ if (entities == null){ return null; }
+    public static List<DeliverDto> toDtoList(List<DeliverDAO> entities){ if (entities == null){ return null; }
         return entities.stream()
                 .map(DeliverMapper::toDto)
                 .toList();
     }
 
-    public static DeliverDAO toEntity(Deliver dto){ if (dto == null){ return null; }
+    public static DeliverDAO toEntity(DeliverDto dto){ if (dto == null){ return null; }
         return new DeliverDAO(
                 dto.getId(),
                 UserMapper.toEntity(dto.getUser()),
@@ -43,7 +43,7 @@ public class DeliverMapper {
         );
     }
 
-    public static List<DeliverDAO> toEntityList(List<Deliver> dtos){ if (dtos == null){ return null; }
+    public static List<DeliverDAO> toEntityList(List<DeliverDto> dtos){ if (dtos == null){ return null; }
         return dtos.stream()
                 .map(DeliverMapper::toEntity)
                 .toList();

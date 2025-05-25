@@ -1,7 +1,7 @@
-package com.yoi.application.Controller;
+package com.yoi.application.controller;
 
-import com.yoi.application.Model.User;
-import com.yoi.application.Service.UserService;
+import com.yoi.application.model.UserDto;
+import com.yoi.application.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +30,8 @@ public class UserController {
 
     @GetMapping
     public String getAllUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
+        List<UserDto> userDtos = userService.getAllUsers();
+        model.addAttribute("users", userDtos);
         return "users/list";
     }
 
@@ -40,16 +40,16 @@ public class UserController {
      */
     @GetMapping("/new")
     public String showCreateUserForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDto());
         return "users/create";
     }
 
     @PostMapping
-    public String createUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
+    public String createUser(@Valid @ModelAttribute("user") UserDto userDto, BindingResult result) {
         if (result.hasErrors()) {
             return "users/create";
         }
-        userService.saveUser(user);
+        userService.saveUser(userDto);
         return "redirect:/users";
     }
 
@@ -58,9 +58,9 @@ public class UserController {
      */
     @GetMapping("/edit/{id}")
     public String showEditUserForm(@PathVariable Long id, Model model) {
-        User user = userService.getUserById(id);
-        if (user != null) {
-            model.addAttribute("user", user);
+        UserDto userDto = userService.getUserById(id);
+        if (userDto != null) {
+            model.addAttribute("user", userDto);
             return "users/edit";
         }
         return "redirect:/users";
@@ -68,14 +68,14 @@ public class UserController {
 
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable Long id,
-                             @Valid @ModelAttribute("user") User user, BindingResult result,
+                             @Valid @ModelAttribute("user") UserDto userDto, BindingResult result,
                              Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("user", user);
+            model.addAttribute("user", userDto);
             return "users/edit";
         }
         try{
-            userService.updateUser(id, user);
+            userService.updateUser(id, userDto);
         }catch (Exception e){
             model.addAttribute("error", "Error updating user: " + e.getMessage());
             return "users/edit";

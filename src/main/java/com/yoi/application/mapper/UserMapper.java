@@ -1,7 +1,7 @@
-package com.yoi.application.Mapper;
+package com.yoi.application.mapper;
 
-import com.yoi.application.Model.User;
-import com.yoi.application.Persistence.DAO.UserDAO;
+import com.yoi.application.model.UserDto;
+import com.yoi.application.persistence.dao.UserDAO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,15 +19,15 @@ public class UserMapper {
      * It is used to convert between the DTO and DAO layers.
      * It is also used to convert between the entity and DTO layers.
      */
-    public static User toDto(UserDAO entity){ if (entity == null){ return  null; }
-        User dto = new User();
+    public static UserDto toDto(UserDAO entity){ if (entity == null){ return  null; }
+        UserDto dto = new UserDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
         return dto;
     }
 
-    public static List<User> toDtoList(List<UserDAO> entities){ if (entities == null){ return null;}
+    public static List<UserDto> toDtoList(List<UserDAO> entities){ if (entities == null){ return null;}
         return entities.stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
@@ -38,14 +38,14 @@ public class UserMapper {
      * It is used to convert between the DTO and DAO layers.
      * It is also used to convert between the entity and DTO layers.
      */
-    public static UserDAO toEntity(User dto){ if (dto == null){ return null;}
+    public static UserDAO toEntity(UserDto dto){ if (dto == null){ return null;}
         UserDAO entity = new UserDAO();
         entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());
         return entity;
     }
-    public static List<UserDAO> toEntityList(List<User> dtos){if (dtos == null){ return null;}
+    public static List<UserDAO> toEntityList(List<UserDto> dtos){if (dtos == null){ return null;}
         return dtos.stream()
                 .map(UserMapper::toEntity)
                 .collect(Collectors.toList());

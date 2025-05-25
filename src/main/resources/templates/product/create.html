@@ -8,7 +8,7 @@
 <body class="container mt-4">
 <h1 class="mb-4">Register New Product</h1>
 
-<form th:action="@{/products}" th:object="${product}" method="post">
+<form th:action="@{/productDtos}" th:object="${productDto}" method="post">
     <div class="mb-3">
         <label class="form-label">Name:</label>
         <input type="text" class="form-control" th:field="*{name}"
@@ -26,7 +26,7 @@
     </div>
 
     <button type="submit" class="btn btn-success">Save</button>
-    <a th:href="@{/products}" class="btn btn-outline-secondary ms-2">Cancel</a>
+    <a th:href="@{/productDtos}" class="btn btn-outline-secondary ms-2">Cancel</a>
 </form>
 </body>
 </html>

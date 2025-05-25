@@ -1,4 +1,4 @@
-package com.yoi.application.Persistence.DAO;
+package com.yoi.application.persistence.dao;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

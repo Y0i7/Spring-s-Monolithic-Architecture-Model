@@ -1,4 +1,4 @@
-package com.yoi.application.Model;
+package com.yoi.application.model;
 
 /*
  * @author Yoi
@@ -6,14 +6,19 @@ package com.yoi.application.Model;
  * @description Product class representing a product entity.
  */
 
-public class Product {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
+public class ProductDto {
     private Long id;
+    @NotBlank(message = "El nombre es obligatorio")
     private String name;
+    @Min(value = 1, message = "El precio debe ser mayor que 0")
     private Double price;
 
-    public Product(){}
+    public ProductDto(){}
 
-    public Product(Long id, String name, Double price){
+    public ProductDto(Long id, String name, Double price){
         this.id = id;
         this.name = name;
         this.price = price;

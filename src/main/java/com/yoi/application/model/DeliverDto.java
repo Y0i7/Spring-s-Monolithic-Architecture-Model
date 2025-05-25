@@ -1,4 +1,4 @@
-package com.yoi.application.Model;
+package com.yoi.application.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,23 +10,23 @@ import java.util.List;
  * @description Deliver class representing a delivery entity.
  */
 
-public class Deliver {
+public class DeliverDto {
     private Long id;
-    private User user;
-    private List<Product> products = new ArrayList<>();
+    private UserDto userDto;
+    private List<ProductDto> productDtos = new ArrayList<>();
     private Double total;
     private Double taxes;
     private Double discount;
     private LocalDate date;
 
 
-    public Deliver(){}
+    public DeliverDto(){}
 
-    public Deliver(Long id, User user, List<Product> products, Double total,
-            Double taxes, Double discount,LocalDate date){
+    public DeliverDto(Long id, UserDto userDto, List<ProductDto> productDtos, Double total,
+                      Double taxes, Double discount, LocalDate date){
         this.id = id;
-        this.user = user;
-        this.products = products;
+        this.userDto = userDto;
+        this.productDtos = productDtos;
         this.total = total;
         this.taxes = taxes;
         this.discount = discount;
@@ -37,13 +37,13 @@ public class Deliver {
 
     public void setId(Long id){ this.id = id; }
 
-    public User getUser(){ return user; }
+    public UserDto getUser(){ return userDto; }
 
-    public void setUser(User user){ this.user = user; }
+    public void setUser(UserDto userDto){ this.userDto = userDto; }
 
-    public List<Product> getProduct(){ return products; }
+    public List<ProductDto> getProduct(){ return productDtos; }
 
-    public void setProduct(List<Product> products) { this.products = products; }
+    public void setProduct(List<ProductDto> productDtos) { this.productDtos = productDtos; }
 
     public void setTotal(Double total){ this.total = total; }
 

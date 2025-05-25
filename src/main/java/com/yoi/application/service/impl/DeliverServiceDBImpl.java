@@ -1,18 +1,17 @@
-package com.yoi.application.Service.Impl;
+package com.yoi.application.service.impl;
 
-import com.yoi.application.Mapper.DeliverMapper;
-import com.yoi.application.Mapper.ProductMapper;
-import com.yoi.application.Mapper.UserMapper;
-import com.yoi.application.Model.Deliver;
-import com.yoi.application.Persistence.DAO.DeliverDAO;
-import com.yoi.application.Persistence.DAO.ProductDAO;
-import com.yoi.application.Persistence.Repository.DeliverRepository;
-import com.yoi.application.Service.DeliverService;
+import com.yoi.application.mapper.DeliverMapper;
+import com.yoi.application.mapper.ProductMapper;
+import com.yoi.application.mapper.UserMapper;
+import com.yoi.application.model.DeliverDto;
+import com.yoi.application.persistence.dao.DeliverDAO;
+import com.yoi.application.persistence.dao.ProductDAO;
+import com.yoi.application.persistence.repository.DeliverRepository;
+import com.yoi.application.service.DeliverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class DeliverServiceDBImpl implements DeliverService {
 
-    @Autowired // Constructor-based dependency injection
+    @Autowired
     private final DeliverRepository deliverRepository;
 
     // This class implements the DeliverService interface for database operations.
@@ -37,7 +36,7 @@ public class DeliverServiceDBImpl implements DeliverService {
      * @return List<Deliver> - A list of Deliver objects.
      */
     @Override
-    public List<Deliver> getAllDelivers() {
+    public List<DeliverDto> getAllDelivers() {
         return deliverRepository.findAll().stream()
                 .map(DeliverMapper::toDto)
                 .collect(Collectors.toList());
@@ -49,7 +48,7 @@ public class DeliverServiceDBImpl implements DeliverService {
      * @return Deliver - The Deliver object with the specified ID, or null if not found.
      */
     @Override
-    public Deliver getDeliverById(Long id) {
+    public DeliverDto getDeliverById(Long id) {
         return deliverRepository.findById(id)
                 .map(DeliverMapper::toDto)
                 .orElse(null);
@@ -61,9 +60,9 @@ public class DeliverServiceDBImpl implements DeliverService {
      * @return Deliver - The saved Deliver object.
      */
     @Override
-    public Deliver saveDeliver(Deliver deliver) {
-        calculateTotals(deliver);
-        DeliverDAO optionalEntity = DeliverMapper.toEntity(deliver);
+    public DeliverDto saveDeliver(DeliverDto deliverDto) {
+        calculateTotals(deliverDto);
+        DeliverDAO optionalEntity = DeliverMapper.toEntity(deliverDto);
         return DeliverMapper.toDto(deliverRepository.save(optionalEntity));
     }
 
@@ -74,21 +73,21 @@ public class DeliverServiceDBImpl implements DeliverService {
      * @return Deliver - The updated Deliver object, or null if not found.
      */
     @Override
-    public Deliver updateDeliver(Long id, Deliver deliver) {
+    public DeliverDto updateDeliver(Long id, DeliverDto deliverDto) {
         return deliverRepository.findById(id)
                 .map((entity) -> {
-                    entity.setUser(UserMapper.toEntity(deliver.getUser()));
-                    entity.setProduct(ProductMapper.toEntityList(deliver.getProduct()));
-                    entity.setDate(deliver.getDate());
+                    entity.setUser(UserMapper.toEntity(deliverDto.getUser()));
+                    entity.setProduct(ProductMapper.toEntityList(deliverDto.getProduct()));
+                    entity.setDate(deliverDto.getDate());
 
                     //Calculate totals again
-                    Deliver tempDeliver = new Deliver();
-                    tempDeliver.setProduct(deliver.getProduct());
-                    calculateTotals(tempDeliver);
+                    DeliverDto tempDeliverDto = new DeliverDto();
+                    tempDeliverDto.setProduct(deliverDto.getProduct());
+                    calculateTotals(tempDeliverDto);
 
-                    entity.setTotal(tempDeliver.getTotal());
-                    entity.setTaxes(tempDeliver.getTaxes());
-                    entity.setDiscount(tempDeliver.getDiscount());
+                    entity.setTotal(tempDeliverDto.getTotal());
+                    entity.setTaxes(tempDeliverDto.getTaxes());
+                    entity.setDiscount(tempDeliverDto.getDiscount());
 
                     return DeliverMapper.toDto(deliverRepository.save(entity));
                 })
@@ -101,11 +100,11 @@ public class DeliverServiceDBImpl implements DeliverService {
      * @return Deliver - The deleted Deliver object, or null if not found.
      */
     @Override
-    public Deliver deleteDeliver(Long id) {
+    public DeliverDto deleteDeliver(Long id) {
         return deliverRepository.findById(id)
                                 .map((entity) -> {
-                                    deliveryRepository.deleteById(id);
-                                    return DeliveryMapper.toDto(entity);
+                                    deliverRepository.deleteById(id);
+                                    return DeliverMapper.toDto(entity);
                                 })
                                 .orElse(null);
     }
@@ -114,8 +113,8 @@ public class DeliverServiceDBImpl implements DeliverService {
      * @description This method calculates the total, taxes, and discount for a delivery.
      * @param deliver - The Deliver object to calculate totals for.
      */
-    private void calculateTotals(Deliver deliver) {
-        List<ProductDAO> products = ProductMapper.toEntityList(deliver.getProduct());
+    private void calculateTotals(DeliverDto deliverDto) {
+        List<ProductDAO> products = ProductMapper.toEntityList(deliverDto.getProduct());
         double subtotal = products.stream()
                 .mapToDouble(ProductDAO::getPrice)
                 .sum();
@@ -123,8 +122,8 @@ public class DeliverServiceDBImpl implements DeliverService {
         double taxes = (subtotal -discout) * 0.15;
         double total = subtotal - discout + taxes;
 
-        deliver.setDiscount(discout);
-        deliver.setTaxes(taxes);
-        deliver.setTotal(total);
+        deliverDto.setDiscount(discout);
+        deliverDto.setTaxes(taxes);
+        deliverDto.setTotal(total);
     }
 }

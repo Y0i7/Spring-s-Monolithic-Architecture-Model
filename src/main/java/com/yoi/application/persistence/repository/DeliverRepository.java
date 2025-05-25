@@ -1,6 +1,6 @@
-package com.yoi.application.Persistence.Repository;
+package com.yoi.application.persistence.repository;
 
-import com.yoi.application.Persistence.DAO.DeliverDAO;
+import com.yoi.application.persistence.dao.DeliverDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 /*

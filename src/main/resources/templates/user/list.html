@@ -9,14 +9,14 @@
 <body class="container mt-4">
 <h1 class="mb-4">Usuarios Registrados</h1>
 
-<a th:href="@{/users/new}" class="btn btn-primary mb-3">Crear Nuevo Usuario</a>
+<a th:href="@{/userDtos/new}" class="btn btn-primary mb-3">Crear Nuevo Usuario</a>
 <a th:href="@{/}" class="btn btn-secondary mb-3 ms-2">Volver al Inicio</a>
 
-<div th:if="${users.empty}" class="alert alert-info">
+<div th:if="${userDtos.empty}" class="alert alert-info">
     No hay usuarios registrados
 </div>
 
-<table class="table table-striped" th:unless="${users.empty}">
+<table class="table table-striped" th:unless="${userDtos.empty}">
     <thead class="table-dark">
     <tr>
         <th>ID</th>
@@ -26,15 +26,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.email}"></td>
+    <tr th:each="userDto : ${userDtos}">
+        <td th:text="${userDto.id}"></td>
+        <td th:text="${userDto.name}"></td>
+        <td th:text="${userDto.email}"></td>
         <td>
-            <a th:href="@{/users/edit/{id}(id=${user.id})}"
+            <a th:href="@{/userDtos/edit/{id}(id=${userDto.id})}"
                class="btn btn-warning btn-sm">Editar</a>
 
-            <form th:action="@{/users/delete/{id}(id=${user.id})}"
+            <form th:action="@{/userDtos/delete/{id}(id=${userDto.id})}"
                   method="post"
                   style="display: inline-block;">
                 <button type="submit"

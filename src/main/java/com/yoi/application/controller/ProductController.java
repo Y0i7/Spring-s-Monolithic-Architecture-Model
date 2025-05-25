@@ -1,7 +1,9 @@
-package com.yoi.application.Controller;
+package com.yoi.application.controller;
 
-import com.yoi.application.Model.Product;
-import com.yoi.application.Service.ProductService;
+import com.yoi.application.config.exceptions.BadRequestException;
+import com.yoi.application.model.ProductDto;
+import com.yoi.application.service.ProductService;
+import com.yoi.application.service.impl.ProductServiceDBImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,16 +23,16 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private final ProductService productService;
+    private final ProductServiceDBImpl productService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductServiceDBImpl productService) {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping()
     public String getAllProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products", products);
+        List<ProductDto> productDtos = productService.getAllProducts();
+        model.addAttribute("products", productDtos);
         return "products/list";
     }
 
@@ -39,16 +41,17 @@ public class ProductController {
      */
     @GetMapping("/new")
     public String showCreateProductForm(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductDto());
         return "products/create";
     }
 
     @PostMapping
-    public String createProduct(@Valid @ModelAttribute("product") Product product, BindingResult result) {
+    public String createProduct(@Valid @ModelAttribute("product") ProductDto productDto,
+                                BindingResult result) {
         if (result.hasErrors()) {
-            return "products/create";
+            throw new BadRequestException("Datos de producto inválidos");
         }
-        productService.saveProduct(product);
+        productService.saveProduct(productDto);
         return "redirect:/products";
     }
 
@@ -58,9 +61,9 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String showEditProductForm(@PathVariable Long id, Model model) {
-        Product product = productService.getProductById(id);
-        if (product != null) {
-            model.addAttribute("product", product);
+        ProductDto productDto = productService.getProductById(id);
+        if (productDto != null) {
+            model.addAttribute("product", productDto);
             return "products/edit";
         }
         return "redirect:/products";
@@ -68,14 +71,14 @@ public class ProductController {
 
     @PostMapping("/update/{id}")
     public String updateProduct(@PathVariable Long id,
-                                @Valid @ModelAttribute("product") Product product, BindingResult result,
+                                @Valid @ModelAttribute("product") ProductDto productDto, BindingResult result,
                                 Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("product", product);
+            model.addAttribute("product", productDto);
             return "products/edit";
         }
         try{
-            productService.updateProduct(id, product);
+            productService.updateProduct(id, productDto);
         } catch (Exception e) {
             model.addAttribute("error", "Error updating product: " + e.getMessage());
             return "products/edit";

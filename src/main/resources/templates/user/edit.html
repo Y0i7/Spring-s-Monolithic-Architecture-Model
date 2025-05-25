@@ -9,8 +9,8 @@
 <body class="container mt-4">
 <h1 class="mb-4">Editar Usuario</h1>
 
-<form th:action="@{/users/update/{id}(id=${user.id})}"
-      th:object="${user}"
+<form th:action="@{/userDtos/update/{id}(id=${userDto.id})}"
+      th:object="${userDto}"
       method="post">
     <input type="hidden" th:field="*{id}"/>
 
@@ -34,7 +34,7 @@
          th:text="${error}"></div>
 
     <button type="submit" class="btn btn-primary">Actualizar</button>
-    <a th:href="@{/users}" class="btn btn-outline-secondary ms-2">Cancelar</a>
+    <a th:href="@{/userDtos}" class="btn btn-outline-secondary ms-2">Cancelar</a>
 </form>
 </body>
 </html>

@@ -1,10 +1,10 @@
-package com.yoi.application.Service.Impl;
+package com.yoi.application.service.impl;
 
-import com.yoi.application.Mapper.UserMapper;
-import com.yoi.application.Model.User;
-import com.yoi.application.Persistence.DAO.UserDAO;
-import com.yoi.application.Persistence.Repository.UserRepository;
-import com.yoi.application.Service.UserService;
+import com.yoi.application.mapper.UserMapper;
+import com.yoi.application.model.UserDto;
+import com.yoi.application.persistence.dao.UserDAO;
+import com.yoi.application.persistence.repository.UserRepository;
+import com.yoi.application.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class UserServiceDBImpl implements UserService {
      * @return List<User> - A list of User objects.
      */
     @Override
-    public List<User> getAllUsers(){
+    public List<UserDto> getAllUsers(){
         List<UserDAO> Entities = userRepository.findAll();
         return UserMapper.toDtoList(Entities);
     }
@@ -43,7 +43,7 @@ public class UserServiceDBImpl implements UserService {
      * @return User - The User object with the specified ID, or null if not found.
      */
     @Override
-    public User getUserById(Long id){
+    public UserDto getUserById(Long id){
         Optional<UserDAO> optionalEntity = userRepository.findById(id);
         return optionalEntity
                 .map(UserMapper::toDto)
@@ -56,8 +56,8 @@ public class UserServiceDBImpl implements UserService {
      * @return User - The saved User object.
      */
     @Override
-    public User saveUser(User user){
-        UserDAO entity = UserMapper.toEntity(user);
+    public UserDto saveUser(UserDto userDto){
+        UserDAO entity = UserMapper.toEntity(userDto);
         return UserMapper.toDto(userRepository.save(entity));
     }
 
@@ -68,12 +68,12 @@ public class UserServiceDBImpl implements UserService {
      * @return User - The updated User object, or null if not found.
      */
     @Override
-    public User updateUser(Long id, User user) {
+    public UserDto updateUser(Long id, UserDto userDto) {
         Optional<UserDAO> optionaEntity = userRepository.findById(id);
         if (optionaEntity.isPresent()) {
             UserDAO entity = optionaEntity.get();
-            entity.setName(user.getName());
-            entity.setEmail(user.getEmail());
+            entity.setName(userDto.getName());
+            entity.setEmail(userDto.getEmail());
             return UserMapper.toDto(userRepository.save(entity));
         }
         return null;
@@ -86,7 +86,7 @@ public class UserServiceDBImpl implements UserService {
      * @return User - The updated User object, or null if not found.
      */
     @Override
-    public User deleteUser(Long id){
+    public UserDto deleteUser(Long id){
         Optional<UserDAO> optionalEntity = userRepository.findById(id);
         if (optionalEntity.isPresent()){
             userRepository.deleteById(id);

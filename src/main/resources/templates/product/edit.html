@@ -8,8 +8,8 @@
 <body class="container mt-4">
 <h1 class="mb-4">Edit Product</h1>
 
-<form th:action="@{/products/update/{id}(id=${product.id})}"
-      th:object="${product}"
+<form th:action="@{/productDtos/update/{id}(id=${productDto.id})}"
+      th:object="${productDto}"
       method="post">
     <input type="hidden" th:field="*{id}"/>
 
@@ -33,7 +33,7 @@
          th:text="${error}"></div>
 
     <button type="submit" class="btn btn-primary">Update</button>
-    <a th:href="@{/products}" class="btn btn-outline-secondary ms-2">Cancel</a>
+    <a th:href="@{/productDtos}" class="btn btn-outline-secondary ms-2">Cancel</a>
 </form>
 </body>
 </html>

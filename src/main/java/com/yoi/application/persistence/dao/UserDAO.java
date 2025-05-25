@@ -1,4 +1,4 @@
-package com.yoi.application.Persistence.DAO;
+package com.yoi.application.persistence.dao;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;

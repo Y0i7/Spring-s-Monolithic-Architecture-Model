@@ -1,4 +1,4 @@
-package com.yoi.application.Controller;
+package com.yoi.application.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
