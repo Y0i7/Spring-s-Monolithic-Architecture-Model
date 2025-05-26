@@ -26,14 +26,12 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
 public class ProductoServiceTest {
 
     private static final String PRODUCTS_ENDPOINT_URL = "/products";
     private static final String GET_ALL_PRODUCTS_VIEW = "products/list";
     private static final String CREATE_PRODUCT_URL = "products/creat";
-
     private static final String PRODUCTS_MODEL_ATTRIBUTE = "products";
     private static final String PRODUCT_MODEL_ATTRIBUTE = "products";
 
